@@ -105,3 +105,6 @@ venv.bak/
 
 # asdf(version control)
 .tool-versions
+
+# PyCharm setting file
+.idea/*
