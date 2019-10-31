@@ -17,7 +17,7 @@ class Count(commands.Cog):
         else:
             db[user_id] += 1
         write_json(db)
-        await ctx.send(f'Level up, {arg}, (now: {db[user_id]}) points')
+        await ctx.send(f'Level up, {arg}, (now: {db[user_id]} points)')
 
     @commands.command()
     async def minus(self, ctx, arg):
@@ -29,6 +29,13 @@ class Count(commands.Cog):
             db[user_id] -= 1
         write_json(db)
         await ctx.send(f'Level down, {arg}, (now: {db[user_id]}) points')
+
+    @commands.command()
+    async def status(self, ctx):
+        member = ctx.author
+        db = read_json()
+        user_id = str(member.id)
+        await ctx.send(f'{db[user_id]} points')
 
 
 def read_json():
