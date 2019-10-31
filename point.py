@@ -35,6 +35,8 @@ class Count(commands.Cog):
         member = ctx.author
         db = read_json()
         user_id = str(member.id)
+        if db.setdefault(user_id) == None:
+            db[user_id] = 0
         await ctx.send(f'{db[user_id]} points')
 
 

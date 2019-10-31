@@ -1,7 +1,6 @@
 import os
 
 import discord.ext.commands
-import observer
 import point
 
 if __name__ == '__main__':
