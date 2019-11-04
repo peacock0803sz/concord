@@ -108,3 +108,6 @@ venv.bak/
 
 # PyCharm setting file
 .idea/*
+
+# database file
+db.json
