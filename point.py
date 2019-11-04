@@ -12,7 +12,7 @@ class Count(commands.Cog):
     async def plus(self, ctx, arg):
         user_id = discord.utils.find(lambda m: m.name == arg[:-5], ctx.channel.guild.members).id
         db = read_json()
-        if db.setdefault(user_id) == None:
+        if db.setdefault(user_id) is None:
             db[user_id] = 1
         else:
             db[user_id] += 1
@@ -23,7 +23,7 @@ class Count(commands.Cog):
     async def minus(self, ctx, arg):
         user_id = discord.utils.find(lambda m: m.name == arg[:-5], ctx.channel.guild.members).id
         db = read_json()
-        if db.setdefault(user_id) == None:
+        if db.setdefault(user_id) is None:
             db[user_id] = -1
         else:
             db[user_id] -= 1
@@ -35,7 +35,7 @@ class Count(commands.Cog):
         member = ctx.author
         db = read_json()
         user_id = str(member.id)
-        if db.setdefault(user_id) == None:
+        if db.setdefault(user_id) is None:
             db[user_id] = 0
         await ctx.send(f'{db[user_id]} points')
 
