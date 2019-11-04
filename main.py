@@ -5,7 +5,7 @@ import point
 
 if __name__ == '__main__':
     BOT_TOKEN = os.environ['CONCORD_TOKEN']
-    bot = discord.ext.commands.Bot('/')
+    bot = discord.ext.commands.Bot('/c ')
     # bot.add_cog(observer.Observer(bot))
     bot.add_cog((point.Count(bot)))
 
