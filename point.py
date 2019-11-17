@@ -1,4 +1,5 @@
 import json
+
 import discord
 from discord.ext import commands
 
@@ -10,25 +11,31 @@ class Count(commands.Cog):
 
     @commands.command()
     async def plus(self, ctx, arg):
-        user_id = discord.utils.find(lambda m: m.name == arg[:-5], ctx.channel.guild.members).id
-        db = read_json()
-        if db.setdefault(user_id) is None:
-            db[user_id] = 1
+        user_id = str(discord.utils.find(lambda m: m.name == arg[:-5], ctx.channel.guild.members).id)
+        if user_id == ctx.author:
+            await ctx.send('Cannot increment yourself')
         else:
-            db[user_id] += 1
-        write_json(db)
-        await ctx.send(f'Level up, {arg}, (now: {db[user_id]} points)')
+            db = read_json()
+            if user_id in db:
+                db[user_id] += 1
+            else:
+                db[user_id] = 1
+            write_json(db)
+            await ctx.send(f'Level up, {arg}, (now: {db[user_id]} points)')
 
     @commands.command()
     async def minus(self, ctx, arg):
-        user_id = discord.utils.find(lambda m: m.name == arg[:-5], ctx.channel.guild.members).id
-        db = read_json()
-        if db.setdefault(user_id) is None:
-            db[user_id] = -1
+        user_id = str(discord.utils.find(lambda m: m.name == arg[:-5], ctx.channel.guild.members).id)
+        if user_id == ctx.author:
+            await ctx.send('Cannot decrement yourself')
         else:
-            db[user_id] -= 1
-        write_json(db)
-        await ctx.send(f'Level down, {arg}, (now: {db[user_id]}) points')
+            db = read_json()
+            if user_id in db:
+                db[user_id] -= 1
+            else:
+                db[user_id] = -1
+            write_json(db)
+            await ctx.send(f'Level down, {arg}, (now: {db[user_id]}) points')
 
     @commands.command()
     async def status(self, ctx):
