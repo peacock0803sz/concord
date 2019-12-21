@@ -11,17 +11,20 @@ class Count(commands.Cog):
 
     @commands.command()
     async def plus(self, ctx, arg):
-        user_id = str(discord.utils.find(lambda m: m.name == arg[:-5], ctx.channel.guild.members).id)
-        if user_id == ctx.author:
+        objective_user = discord.utils.find(lambda m: m.name == arg[:-5], ctx.channel.guild.members)
+        objective_user_id = str(objective_user.id)
+        if objective_user_id == ctx.author:
             await ctx.send('Cannot increment yourself')
         else:
             db = read_json()
-            if user_id in db:
-                db[user_id] += 1
+            if objective_user_id in db:
+                db[objective_user_id]['points'] += 1
+                db[objective_user_id]['golds'] -= 1
             else:
-                db[user_id] = 1
+                db[objective_user_id]['points'] = 1
+                db[objective_user_id]['golds'] = 1
             write_json(db)
-            await ctx.send(f'Level up, {arg}, (now: {db[user_id]} points)')
+            await ctx.send(f'Level up, {arg}, (now: {db[objective_user_id]} points)')
 
     @commands.command()
     async def minus(self, ctx, arg):
@@ -31,9 +34,11 @@ class Count(commands.Cog):
         else:
             db = read_json()
             if user_id in db:
-                db[user_id] -= 1
+                db[user_id]['points'] -= 1
+                db[user_id]['wallet'] -= 1
             else:
-                db[user_id] = -1
+                db[user_id]['points'] = -1
+                db[user_id]['wallet'] = 1
             write_json(db)
             await ctx.send(f'Level down, {arg}, (now: {db[user_id]}) points')
 
