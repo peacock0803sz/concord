@@ -11,20 +11,19 @@ class Count(commands.Cog):
 
     @commands.command()
     async def plus(self, ctx, arg):
-        objective_user = discord.utils.find(lambda m: m.name == arg[:-5], ctx.channel.guild.members)
-        objective_user_id = str(objective_user.id)
-        if objective_user_id == ctx.author:
+        objective_user_id = str(discord.utils.find(lambda m: m.name == arg[:-5], ctx.channel.guild.members).id)
+        command_author_id = str(ctx.author.id)
+        print(objective_user_id, command_author_id)
+        if objective_user_id == command_author_id:
             await ctx.send('Cannot increment yourself')
         else:
             db = read_json()
             if objective_user_id in db:
                 db[objective_user_id]['points'] += 1
-                db[objective_user_id]['golds'] -= 1
             else:
-                db[objective_user_id]['points'] = 1
-                db[objective_user_id]['golds'] = 1
+                db[objective_user_id] = {'points': 1, 'golds': None}
             write_json(db)
-            await ctx.send(f'Level up, {arg}, (now: {db[objective_user_id]} points)')
+            await ctx.send(f'Level up, {arg}, (now: {db[objective_user_id]["points"]} points)')
 
     @commands.command()
     async def minus(self, ctx, arg):
